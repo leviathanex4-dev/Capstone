@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Lovey 💛</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #fff3b0, #ffd166);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Floating Hearts */
+  .heart {
+    position: absolute;
+    animation: float 7s linear infinite;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(110vh) scale(0.6);
+      opacity: 0;
+    }
+    50% { opacity: 1; }
+    100% {
+      transform: translateY(-10vh) scale(1.3);
+      opacity: 0;
+    }
+  }
+
+  /* Card */
+  .card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 360px;
+    width: 90%;
+    z-index: 2;
+  }
+
+  /* Animated Name */
+  .name {
+    font-size: 32px;
+    color: #f4a261;
+    animation: bounce 1.8s infinite;
+    text-shadow: 0 0 10px rgba(244,162,97,0.7);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  h1 {
+    color: #f4a261;
+  }
+
+  input {
+    padding: 10px;
+    width: 80%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    font-size: 16px;
+  }
+
+  button {
+    margin-top: 15px;
+    padding: 12px 28px;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    background: #f4a261;
+    color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  #valentine { display: none; }
+  .error { color: red; margin-top: 10px; }
+
+  .controls {
+    margin-top: 15px;
+  }
+
+  /* Letter */
+  #letter {
+    display: none;
+    margin-top: 15px;
+    background: #fffbea;
+    border-radius: 15px;
+    padding: 20px;
+    color: #444;
+    font-size: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: fadeIn 0.6s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  iframe {
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- HEARTS -->
+<script>
+  for (let i = 0; i < 45; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💛";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDelay = Math.random() * 7 + "s";
+    heart.style.fontSize = Math.random() * 22 + 14 + "px";
+    document.body.appendChild(heart);
+  }
+</script>
+
+<!-- LOGIN -->
+<div class="card" id="login">
+  <div class="name">Lovey 💛</div>
+  <p>Enter the secret password</p>
+  <input type="password" id="password" placeholder="Password">
+  <br>
+  <button onclick="checkPassword()">Enter 💛</button>
+  <div class="error" id="error"></div>
+</div>
+
+<!-- VALENTINE -->
+<div class="card" id="valentine">
+  <div class="name">Lovey 💛</div>
+  <h1 id="message">Will you be my Valentine?</h1>
+
+  <button id="yesBtn">Yes 💕</button>
+
+  <!-- Letter Button -->
+  <div id="letterIcon" style="display:none;">
+    <button onclick="toggleLetter()">📩 Open Letter</button>
+  </div>
+
+  <!-- Letter Content -->
+  <div id="letter">
+    <p>
+      Hey lovey 💛,<br><br>
+      I know dugay ko naka ask, dugay ko ga himo ani...
+      I know nga napungot nakay ka... Sorry hehehe :&gt;<br><br>
+      Though di ta mag ko yung rn feb 14 do know that you are mine okay?
+      Syempre wanay back out ani.<br><br>
+      I love you :&gt;
+    </p>
+  </div>
+
+  <div class="controls">
+    <button onclick="toggleMute()">🔊 Mute / Unmute</button>
+    <button onclick="goFullscreen()">📱 Full Screen</button>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<iframe
+  id="music"
+  src="https://www.youtube.com/embed/iqkQRgGdAPo?enablejsapi=1&autoplay=1&loop=1&playlist=iqkQRgGdAPo"
+  allow="autoplay">
+</iframe>
+
+<script>
+  const correctPassword = "gwaposijibdel";
+  const login = document.getElementById("login");
+  const valentine = document.getElementById("valentine");
+  const error = document.getElementById("error");
+  const music = document.getElementById("music");
+
+  function checkPassword() {
+    if (document.getElementById("password").value === correctPassword) {
+      login.style.display = "none";
+      valentine.style.display = "block";
+      music.style.display = "block";
+    } else {
+      error.textContent = "Wrong password 😢";
+    }
+  }
+
+  let clicks = 0;
+  const message = document.getElementById("message");
+  const button = document.getElementById("yesBtn");
+  const emojis = ["🥺","😳","💛","🥰","😍","💖","✨"];
+
+  button.onclick = () => {
+    clicks++;
+    if (clicks < 8) {
+      message.textContent = "really? " + emojis[clicks - 1];
+    } else {
+      message.textContent =
+        "YEYYYYYY 🥳💛 Lovey, you and me this Feb 14, okay love? 💞";
+      button.style.display = "none";
+      document.getElementById("letterIcon").style.display = "block";
+    }
+  };
+
+  function toggleLetter() {
+    const letter = document.getElementById("letter");
+    letter.style.display = letter.style.display === "none" ? "block" : "none";
+  }
+
+  /* Music mute */
+  let muted = false;
+  function toggleMute() {
+    music.contentWindow.postMessage(
+      JSON.stringify({
+        event: "command",
+        func: muted ? "unMute" : "mute"
+      }),
+      "*"
+    );
+    muted = !muted;
+  }
+
+  function goFullscreen() {
+    document.documentElement.requestFullscreen();
+  }
+</script>
+
+</body>
+</html>
