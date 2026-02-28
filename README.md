@@ -961,38 +961,6 @@
     color: var(--success-green);
   }
   
-  /* 2FA Styles */
-  .two-factor-setup {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  
-  .qr-code-2fa {
-    width: 200px;
-    height: 200px;
-    margin: 20px auto;
-    background: white;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  .verification-code {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  
-  .verification-code input {
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
   /* Behavioral Report */
   .behavior-item {
     display: flex;
@@ -2111,24 +2079,6 @@
   </div>
 </div>
 
-<!-- 2FA Modal -->
-<div class="login" id="twoFactorAuth" style="display:none;">
-  <div class="box">
-    <h2>🔐 Two-Factor Authentication</h2>
-    <p style="font-size: 13px; color: #666;">Enter the 6-digit code sent to your registered email/phone.</p>
-    <div class="verification-code">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 0)">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 1)">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 2)">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 3)">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 4)">
-      <input type="text" maxlength="1" class="2fa-code" onkeyup="moveToNext(this, 5)">
-    </div>
-    <button onclick="verify2FA()" style="background: linear-gradient(135deg, var(--main-red) 0%, var(--main-blue) 100%); color: white; padding: 14px; font-size: 16px;">🔓 Verify</button>
-    <p style="font-size: 13px; margin-top: 12px;"><span class="signup-link" onclick="showLogin()">Cancel</span></p>
-  </div>
-</div>
-
 <div class="login" id="signup" style="display:none;">
   <div class="box">
     <h2>📝 Student Sign Up</h2>
@@ -2309,36 +2259,6 @@
     return parent || null;
   }
   
-  //------ TWO FACTOR AUTHENTICATION ------
-  let pending2FAUser = null;
-  
-  function moveToNext(input, index) {
-    if (input.value.length === 1) {
-      const inputs = document.querySelectorAll('.2fa-code');
-      if (index < inputs.length - 1) {
-        inputs[index + 1].focus();
-      }
-    }
-  }
-  
-  function verify2FA() {
-    const inputs = document.querySelectorAll('.2fa-code');
-    let code = '';
-    inputs.forEach(input => code += input.value);
-    
-    if (code.length !== 6) {
-      alert('⚠️ Please enter all 6 digits');
-      return;
-    }
-    
-    // In real implementation, verify against server
-    // For demo, accept any 6 digits
-    document.getElementById('twoFactorAuth').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    loadDashboard();
-    startSessionTimer();
-  }
-  
   //------ SESSION MANAGEMENT ------
   function startSessionTimer() {
     // Clear existing timers
@@ -2432,15 +2352,15 @@
   //------ DATA ------
   let role="", currentUser="";
   let students = JSON.parse(localStorage.getItem('students')) || [
-    {name:"Jibdel",id:"ST001",section:"12-A",track:"Academic",strand:"STEM",gradeLevel:"12",username:"jibdel",password:simpleHash("Test123!"),approved:true,pic:"",email:"jibdel@dshs.edu",twoFAEnabled:false,behaviorLog:[]},
-    {name:"Viennes",id:"ST002",section:"12-B",track:"Academic",strand:"ABM",gradeLevel:"12",username:"viennes",password:simpleHash("Test123!"),approved:true,pic:"",email:"viennes@dshs.edu",twoFAEnabled:false,behaviorLog:[]},
-    {name:"Jurl",id:"ST003",section:"12-C",track:"Academic",strand:"STEM",gradeLevel:"12",username:"jurl",password:simpleHash("Test123!"),approved:true,pic:"",email:"jurl@dshs.edu",twoFAEnabled:false,behaviorLog:[]}
+    {name:"Jibdel",id:"ST001",section:"12-A",track:"Academic",strand:"STEM",gradeLevel:"12",username:"jibdel",password:simpleHash("Test123!"),approved:true,pic:"",email:"jibdel@dshs.edu",behaviorLog:[]},
+    {name:"Viennes",id:"ST002",section:"12-B",track:"Academic",strand:"ABM",gradeLevel:"12",username:"viennes",password:simpleHash("Test123!"),approved:true,pic:"",email:"viennes@dshs.edu",behaviorLog:[]},
+    {name:"Jurl",id:"ST003",section:"12-C",track:"Academic",strand:"STEM",gradeLevel:"12",username:"jurl",password:simpleHash("Test123!"),approved:true,pic:"",email:"jurl@dshs.edu",behaviorLog:[]}
   ];
   let teachers = JSON.parse(localStorage.getItem('teachers')) || [
-    {name:"Mr. Smith",id:"TE001",position:"Teacher III",sectionHandled:"12-A",username:"teacher1",password:simpleHash("Teach123!"),email:"smith@dshs.edu",twoFAEnabled:false}
+    {name:"Mr. Smith",id:"TE001",position:"Teacher III",sectionHandled:"12-A",username:"teacher1",password:simpleHash("Teach123!"),email:"smith@dshs.edu"}
   ];
   let parents = JSON.parse(localStorage.getItem('parents')) || [
-    {name:"Parent of Jibdel",child:"Jibdel",username:"parentSt001",password:simpleHash("Parent123!"),email:"parent1@email.com",twoFAEnabled:false}
+    {name:"Parent of Jibdel",child:"Jibdel",username:"parentSt001",password:simpleHash("Parent123!"),email:"parent1@email.com"}
   ];
   let subjects = JSON.parse(localStorage.getItem('subjects')) || ["3I's","Genchem 2","P6 2","Perdev","CPAR","Entrepreneurship"];
   let scheduleTimes = JSON.parse(localStorage.getItem('scheduleTimes')) || {"3I's":"8:00-9:00","Genchem 2":"9:00-10:00","P6 2":"10:00-11:00","Perdev":"11:45-12:30","CPAR":"12:30-1:00","Entrepreneurship":"1:00-2:00"};
@@ -2467,7 +2387,7 @@
   }
   let bulletinBoard = JSON.parse(localStorage.getItem('bulletinBoard')) || ["Welcome to the DSHS School System!"];
   let plannerData = JSON.parse(localStorage.getItem('plannerData')) || {};
-  let adminAccount = {name:"Administrator", username:"admin", password:simpleHash("Admin123!"),email:"admin@dshs.edu",twoFAEnabled:true};
+  let adminAccount = {name:"Administrator", username:"admin", password:simpleHash("Admin123!"),email:"admin@dshs.edu"};
   
   // New data structures
   let messages = JSON.parse(localStorage.getItem('messages')) || [];
@@ -2540,7 +2460,6 @@
     const username=document.getElementById("loginUsername").value.trim();
     const pass=simpleHash(document.getElementById("loginPassword").value);
     let found=false;
-    let requires2FA = false;
 
     // Check for lockout
     if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
@@ -2552,7 +2471,6 @@
       role="admin"; 
       currentUser=adminAccount.name; 
       found=true; 
-      requires2FA = adminAccount.twoFAEnabled;
     }
     
     teachers.forEach(function(t){ 
@@ -2560,7 +2478,6 @@
         role="teacher"; 
         currentUser=t.name; 
         found=true; 
-        requires2FA = t.twoFAEnabled;
       }
     });
     
@@ -2570,7 +2487,6 @@
           role="student"; 
           currentUser=s.name; 
           found=true; 
-          requires2FA = s.twoFAEnabled;
         } else { 
           document.getElementById("msg").innerText="Account not approved yet"; 
           recordFailedLogin();
@@ -2584,7 +2500,6 @@
         role="parent"; 
         currentUser=p.child; 
         found=true; 
-        requires2FA = p.twoFAEnabled;
       }
     });
 
@@ -2596,20 +2511,12 @@
     
     resetLoginAttempts();
     
-    if (requires2FA) {
-      pending2FAUser = currentUser;
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('twoFactorAuth').style.display = 'flex';
-      // Focus first input
-      setTimeout(() => document.querySelector('.2fa-code').focus(), 100);
-    } else {
-      document.getElementById("login").style.display="none";
-      document.getElementById("signup").style.display="none";
-      document.getElementById("dashboard").style.display="block";
-      loadDashboard();
-      startSessionTimer();
-      addNotification('Welcome back, ' + currentUser + '!', 'system');
-    }
+    document.getElementById("login").style.display="none";
+    document.getElementById("signup").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    loadDashboard();
+    startSessionTimer();
+    addNotification('Welcome back, ' + currentUser + '!', 'system');
   }
 
   //------ DASHBOARD ------
@@ -2737,9 +2644,6 @@
     if (sessionTimer) clearTimeout(sessionTimer);
     if (sessionWarningTimer) clearTimeout(sessionWarningTimer);
     document.getElementById('sessionWarning').style.display = 'none';
-    
-    // Clear 2FA pending
-    pending2FAUser = null;
   }
 
   //------ SHOW SIGNUP/LOGIN ------
@@ -2747,7 +2651,6 @@
   function showLogin(){ 
     document.getElementById("signup").style.display="none"; 
     document.getElementById("forgotPassword").style.display="none";
-    document.getElementById("twoFactorAuth").style.display="none";
     document.getElementById("login").style.display="flex"; 
   }
   function clearSignup(){ 
@@ -2811,7 +2714,6 @@
       password:simpleHash(password),
       approved:false,
       pic:"",
-      twoFAEnabled:false,
       verificationCode: verificationCode,
       behaviorLog: []
     };
@@ -2848,8 +2750,7 @@
         child: name,
         username: parentUsername,
         password: simpleHash(parentPassword),
-        email: "parent." + email,
-        twoFAEnabled: false
+        email: "parent." + email
       });
       
       let parentAccounts = JSON.parse(localStorage.getItem('parentAccounts')) || [];
@@ -4141,24 +4042,6 @@
     if(tab === "Settings"){
       section.innerHTML = "<h3>⚙️ Settings</h3>";
       
-      // Account Security
-      section.innerHTML += `
-        <div class="settings-section">
-          <h4>🔐 Account Security</h4>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-            <div>
-              <strong>Two-Factor Authentication</strong>
-              <p style="margin: 5px 0; font-size: 13px; color: #666;">Add an extra layer of security</p>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="toggle2FA" onchange="toggle2FA()" ${getCurrentUser()?.twoFAEnabled ? 'checked' : ''}>
-              <span class="slider"></span>
-            </label>
-          </div>
-          <button onclick="changePassword()" style="width: auto; background: var(--main-blue); color: white; margin-top: 10px;">🔑 Change Password</button>
-        </div>
-      `;
-      
       // Appearance
       section.innerHTML += `
         <div class="settings-section">
@@ -5053,8 +4936,7 @@
       sectionHandled: section,
       username: username,
       email: email,
-      password: simpleHash(password),
-      twoFAEnabled: false
+      password: simpleHash(password)
     });
     
     saveData();
@@ -6130,32 +6012,9 @@
     return null;
   }
   
-  function toggle2FA() {
-    const user = getCurrentUser();
-    if(user) {
-      user.twoFAEnabled = !user.twoFAEnabled;
-      saveData();
-      alert(user.twoFAEnabled ? '✅ Two-factor authentication enabled' : '❌ Two-factor authentication disabled');
-    }
-  }
-  
   function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-  }
-  
-  function changePassword() {
-    const newPass = prompt('Enter new password (min 8 chars):');
-    if(newPass && newPass.length >= 8) {
-      const user = getCurrentUser();
-      if(user) {
-        user.password = simpleHash(newPass);
-        saveData();
-        alert('✅ Password changed successfully!');
-      }
-    } else {
-      alert('Password must be at least 8 characters');
-    }
   }
   
   function changeLanguage() {
